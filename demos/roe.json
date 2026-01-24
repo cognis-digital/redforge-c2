@@ -1,0 +1,27 @@
+{
+  "engagement_id": "RT-2026-Q2-DEMO",
+  "authorized_by": "CISO Demo",
+  "start_ts": 1780951809.3177285,
+  "end_ts": 1781560209.3177292,
+  "in_scope_targets": [
+    "demo.lab.internal",
+    "10.20.0.0/16",
+    "*.test.demo"
+  ],
+  "out_of_scope_targets": [
+    "prod.*",
+    "payroll.lab.internal"
+  ],
+  "allowed_techniques": [
+    "T1078",
+    "T1059",
+    "T1110",
+    "T1003"
+  ],
+  "forbidden_techniques": [
+    "T1485",
+    "T1486"
+  ],
+  "destructive_actions_require_tpi": true,
+  "sla_first_response_minutes": 15
+}

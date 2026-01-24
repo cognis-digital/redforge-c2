@@ -1,0 +1,7 @@
+Copyright (C) 2026 Cognis Digital
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License version 3 as published by the FSF.
+Full text: https://www.gnu.org/licenses/gpl-3.0.html
+
+This repo inherits GPL-3 because it forks/links a GPL-3 upstream.
+All content is unclassified, EAR99, public-release.

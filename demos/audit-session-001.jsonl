@@ -1,0 +1,3 @@
+{"ts": 1780955109.3178167, "prev": "GENESIS", "event": {"actor": "alice", "target": "demo.lab.internal", "attack": "T1078", "cmd": "whoami", "decision": "ALLOW"}, "hash": "x"}
+{"ts": 1780955209.3178277, "prev": "x", "event": {"actor": "alice", "target": "prod.crm", "attack": "T1078", "cmd": "whoami", "decision": "DENY", "reason": "out of scope"}, "hash": "y"}
+{"ts": 1780955309.3178341, "prev": "y", "event": {"actor": "alice", "target": "demo.lab.internal", "attack": "T1485", "cmd": "rm -rf /", "decision": "ALLOW"}, "hash": "z"}
