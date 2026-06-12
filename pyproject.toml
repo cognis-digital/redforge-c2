@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "cognis-redforge-c2"
 version = "0.1.0"
 description = "Authorized red-team engagement governance: scope enforcement, TPI, audit-log overlay"
-license = {text = "GPL-3.0-or-later"}
+license = { text = "LicenseRef-COCL-1.0" }
 requires-python = ">=3.10"
 authors = [{name="Cognis Digital", email="suite@cognis.digital"}]
 readme = "README.md"
