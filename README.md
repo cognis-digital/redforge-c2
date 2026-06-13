@@ -5,6 +5,41 @@
 
 > Wrap an upstream C2 (Sliver/Mythic/Empire) with Rules of Engagement enforcement: scope, TPI, audit-log, expiration.
 
+## Usage — step by step
+
+`redforge-c2` is an engagement-governance overlay for *authorized* red-team C2: it scans a session/audit log for rules-of-engagement (ROE) violations.
+
+1. **Install:**
+
+   ```bash
+   pip install cognis-redforge-c2      # or: pip install -e .
+   redforge-c2 --version
+   ```
+
+2. **Run a scan** over the engagement workspace (must contain the session audit log; `target` defaults to `.`):
+
+   ```bash
+   redforge-c2 ./engagement --format console
+   ```
+
+3. **Emit JSON** and save it (formats: `console`, `json`, `markdown`, `sarif`, `oscal`):
+
+   ```bash
+   redforge-c2 ./engagement --format json --out roe-findings.json
+   ```
+
+4. **Read the result** — findings flag a missing log (`RF-NOLOG`), denied actions (`RF-DENY`), and missing two-person-integrity approval (`RF-TPI-MISS`, very high):
+
+   ```bash
+   jq '.findings[] | {id, severity, message}' roe-findings.json
+   ```
+
+5. **Gate it in CI** — fail the pipeline on any very-high ROE violation:
+
+   ```bash
+   redforge-c2 ./engagement --format sarif --out redforge.sarif --fail-on very_high
+   ```
+
 ## Upstream
 
 Forks / wraps **https://github.com/BishopFox/sliver**. See [`UPSTREAM.md`](./UPSTREAM.md) for the
