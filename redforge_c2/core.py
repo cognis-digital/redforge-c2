@@ -11,7 +11,7 @@ Designed for use by authorized red teams on systems they have written
 authorization to test (Rules of Engagement / Authorization to Operate).
 """
 from __future__ import annotations
-import json, time, hashlib, fnmatch
+import json, time, fnmatch
 from pathlib import Path
 from dataclasses import dataclass, field
 from cognis_mil import ScanResult, Finding, Severity, AuditLog

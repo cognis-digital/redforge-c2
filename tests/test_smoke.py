@@ -1,7 +1,5 @@
-import time, json
 from pathlib import Path
-from redforge_c2.core import (load_roe, is_in_scope, check_technique, check_window,
-                               requires_tpi, authorize_command, scan)
+from redforge_c2.core import (load_roe, is_in_scope, check_technique, requires_tpi, authorize_command, scan)
 from cognis_mil import AuditLog
 D = Path(__file__).parent.parent / "demos"
 def test_in_scope():

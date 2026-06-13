@@ -5,6 +5,12 @@
 
 > Wrap an upstream C2 (Sliver/Mythic/Empire) with Rules of Engagement enforcement: scope, TPI, audit-log, expiration.
 
+<!-- cognis:layman:start -->
+## What is this?
+
+redforge-c2 is a safety guardrail for authorized security testing teams — it sits in front of hacking tools like Sliver or Mythic and enforces the written rules before any command runs. Before a tester can touch a target system, the tool checks that the target is on the approved list, the technique is permitted, the time window is active, and — for risky actions like deleting files — that a second operator has also approved it. Every decision is recorded in a tamper-evident audit log, and after a test is complete you can run a compliance scan to catch any gaps, such as a destructive action that bypassed the two-person approval requirement. It is aimed at military and government red teams that need documented, auditable proof they stayed within their authorization.
+<!-- cognis:layman:end -->
+
 ## Upstream
 
 Forks / wraps **https://github.com/BishopFox/sliver**. See [`UPSTREAM.md`](./UPSTREAM.md) for the
@@ -17,6 +23,42 @@ licensing posture, supported commits, and how to upgrade.
 - TPI second-operator requirement on destructive ops
 - Hash-chained audit log (use shared `cognis_mil.AuditLog`)
 - Post-engagement compliance scanner (detects TPI gaps, scope violations)
+
+<!-- cognis:install:start -->
+## Install
+
+`redforge-c2` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/redforge-c2/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/redforge-c2/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/redforge-c2.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/redforge-c2.git"  # uv
+pip install "git+https://github.com/cognis-digital/redforge-c2.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/redforge-c2.git
+cd redforge-c2 && pip install .
+```
+
+Then run:
+```sh
+redforge-c2 --help
+```
+<!-- cognis:install:end -->
 
 ## Install
 
@@ -69,7 +111,7 @@ These are emitted in JSON, SARIF, and the OSCAL skeleton.
 ```yaml
 - name: redforge-c2 scan
   run: |
-    pip install cognis-redforge-c2
+    pip install "git+https://github.com/cognis-digital/redforge-c2.git"
     redforge-c2 . --format=oscal --out=assessment-results.json --fail-on=high
 - name: Upload to eMASS/Xacta
   run: cognis-rmf-package import assessment-results.json
@@ -81,3 +123,42 @@ These are emitted in JSON, SARIF, and the OSCAL skeleton.
 Apache-2.0 unless stated otherwise.
 
 See [the master index](../../MASTER-INDEX.md).
+
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-5%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-13):
+
+```text
+tests        : 5 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : redforge-c2 0.1.0
+package      : redforge_c2
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+usage: redforge-c2 [-h] [--format {console,json,markdown,sarif,oscal}]
+                   [--out OUT] [--fail-on {very_high,high,moderate,low,none}]
+                   [--classification CLASSIFICATION] [-v]
+                   [target]
+
+redforge-c2 — Cognis Digital · Military/IC ecosystem
+
+positional arguments:
+  target                Path/target
+
+options:
+  -h, --help            show this help message and exit
+  --format {console,json,markdown,sarif,oscal}
+  --out OUT             Write output to file
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m redforge_c2 --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
