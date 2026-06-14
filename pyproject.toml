@@ -23,3 +23,6 @@ redforge-c2 = "redforge_c2.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["redforge_c2", "cognis_mil"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
