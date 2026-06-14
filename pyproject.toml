@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cognis-redforge-c2"
-version = "0.1.0"
+version = "0.1.1"
 description = "Authorized red-team engagement governance: scope enforcement, TPI, audit-log overlay"
 license = { text = "LicenseRef-COCL-1.0" }
 requires-python = ">=3.10"
@@ -14,9 +14,11 @@ keywords = ["military","ic","dod","cognis-digital","redforge-c2"]
 dependencies = []
 
 [project.optional-dependencies]
+connect = ["cognis-connect @ git+https://github.com/cognis-digital/cognis-connect.git"]
 dev = ["pytest>=8.0", "pytest-cov"]
 
 [project.scripts]
+"redforge-c2-emit" = "redforge_c2.connect:emit_main"
 redforge-c2 = "redforge_c2.cli:main"
 
 [tool.hatch.build.targets.wheel]
