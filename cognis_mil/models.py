@@ -1,25 +1,29 @@
 """NIST 800-30 / DoD-aligned severity model. All values are placeholders."""
 from __future__ import annotations
-from dataclasses import dataclass, field, asdict
-from enum import Enum
+
 import time
+from dataclasses import asdict, dataclass, field
+from enum import Enum
+
 
 class Severity(str, Enum):
     # NIST 800-30 Table I-2 maps. We keep CRITICAL as a synonym for VERY_HIGH.
     VERY_HIGH = "very_high"
-    HIGH      = "high"
-    MODERATE  = "moderate"
-    LOW       = "low"
-    VERY_LOW  = "very_low"
-    CRITICAL  = "very_high"  # alias
+    HIGH = "high"
+    MODERATE = "moderate"
+    LOW = "low"
+    VERY_LOW = "very_low"
+    CRITICAL = "very_high"  # alias
+
 
 WEIGHTS = {
     Severity.VERY_HIGH: 10.0,
-    Severity.HIGH:       7.0,
-    Severity.MODERATE:   4.0,
-    Severity.LOW:        2.0,
-    Severity.VERY_LOW:   0.5,
+    Severity.HIGH: 7.0,
+    Severity.MODERATE: 4.0,
+    Severity.LOW: 2.0,
+    Severity.VERY_LOW: 0.5,
 }
+
 
 @dataclass
 class Finding:
@@ -31,10 +35,10 @@ class Finding:
     remediation: str = ""
     category: str = ""
     # Compliance crosswalks (all placeholders unless operator fills in)
-    nist_800_53: str = ""        # e.g. "AC-2(1)"
-    disa_stig: str = ""          # e.g. "V-242414"
-    mitre_attack: str = ""       # e.g. "T1078"
-    cci: str = ""                # Control Correlation Identifier
+    nist_800_53: str = ""   # e.g. "AC-2(1)"
+    disa_stig: str = ""     # e.g. "V-242414"
+    mitre_attack: str = ""  # e.g. "T1078"
+    cci: str = ""           # Control Correlation Identifier
     weight: float = 0.0
 
     def __post_init__(self):
@@ -47,6 +51,7 @@ class Finding:
         d = asdict(self)
         d["severity"] = self.severity.value
         return d
+
 
 @dataclass
 class ScanResult:
@@ -61,23 +66,40 @@ class ScanResult:
     # Classification fields are OPERATOR-SUPPLIED. We default to placeholder.
     classification_placeholder: str = "UNCLASSIFIED//FOR PUBLIC RELEASE"
 
-    def add(self, f: Finding): self.findings.append(f)
-    def all_findings(self): return self.findings
-    def total_findings(self): return len(self.findings)
+    def add(self, f: Finding):
+        self.findings.append(f)
+
+    def all_findings(self):
+        return self.findings
+
+    def total_findings(self):
+        return len(self.findings)
 
     def finalize(self):
         if not self.findings:
-            self.composite_score = 0.0; self.risk_level = "Very Low"; return self
+            self.composite_score = 0.0
+            self.risk_level = "Very Low"
+            return self
         score = sum(f.weight for f in self.findings) * 1.5
         self.composite_score = min(100.0, score)
         s = self.composite_score
-        self.risk_level = "Very High" if s >= 80 else "High" if s >= 60 else "Moderate" if s >= 40 else "Low" if s >= 20 else "Very Low"
+        if s >= 80:
+            self.risk_level = "Very High"
+        elif s >= 60:
+            self.risk_level = "High"
+        elif s >= 40:
+            self.risk_level = "Moderate"
+        elif s >= 20:
+            self.risk_level = "Low"
+        else:
+            self.risk_level = "Very Low"
         return self
 
     def to_dict(self):
         return {
             "classification": self.classification_placeholder,
-            "tool_name": self.tool_name, "tool_version": self.tool_version,
+            "tool_name": self.tool_name,
+            "tool_version": self.tool_version,
             "items_scanned": self.items_scanned,
             "composite_score": round(self.composite_score, 1),
             "risk_level": self.risk_level,
