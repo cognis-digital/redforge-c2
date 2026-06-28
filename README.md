@@ -5,6 +5,44 @@
 
 > Wrap an upstream C2 (Sliver/Mythic/Empire) with Rules of Engagement enforcement: scope, TPI, audit-log, expiration.
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ redforge-c2-emit --version
+redforge-c2 0.1.0
+```
+
+```console
+$ redforge-c2-emit --help
+usage: redforge-c2 [-h] [--format {console,json,markdown,sarif,oscal}]
+                   [--out OUT] [--fail-on {very_high,high,moderate,low,none}]
+                   [--classification CLASSIFICATION] [-v]
+                   [target]
+
+redforge-c2 — Cognis Digital · Military/IC ecosystem
+
+positional arguments:
+  target                Path/target
+
+options:
+  -h, --help            show this help message and exit
+  --format {console,json,markdown,sarif,oscal}
+  --out OUT             Write output to file
+  --fail-on {very_high,high,moderate,low,none}
+  --classification CLASSIFICATION
+                        Operator-supplied banner. PLACEHOLDER. Tool does not
+                        interpret.
+  -v, --version         show program's version number and exit
+```
+
+> Blocks above are real `redforge-c2` output — reproduce them from a clone.
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 `redforge-c2` is an engagement-governance overlay for *authorized* red-team C2: it scans a session/audit log for rules-of-engagement (ROE) violations.

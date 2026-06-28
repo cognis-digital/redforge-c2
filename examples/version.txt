@@ -1,0 +1,3 @@
+$ redforge-c2-emit --version
+
+redforge-c2 0.1.0
